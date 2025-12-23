@@ -13,22 +13,27 @@
     /* Custom fonts (Iceberg & Wallpoet) */
     @font-face {
       font-family: 'Iceberg';
-      src: url(https://fonts.gstatic.com/s/iceberg/v7/8QIJdijAiM7o-qnZiI8EqprnEO0.woff2) format('woff2');
+      font-style: normal;
+      font-weight: 400;
+      src: local('Iceberg'), local('Iceberg-Regular'), url(https://fonts.gstatic.com/s/iceberg/v7/8QIJdijAiM7o-qnZiI8EqprnEO0.woff2) format('woff2');
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
     @font-face {
       font-family: 'Wallpoet';
-      src: url(https://fonts.gstatic.com/s/wallpoet/v11/f0X10em2_8RnXVVdUObp58Tt868H.woff2) format('woff2');
+      font-style: normal;
+      font-weight: 400;
+      src: local('Wallpoet'), url(https://fonts.gstatic.com/s/wallpoet/v11/f0X10em2_8RnXVVdUObp58Tt868H.woff2) format('woff2');
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
 
     body, html {
       height: 100%;
       margin: 0;
-      background: black;
+      background: black !important;
       color: white;
       font-family: 'Nunito', sans-serif;
       overflow-x: hidden;
+      position: relative;
     }
 
     #particles-js {
@@ -36,12 +41,15 @@
       width: 100%;
       height: 100%;
       top: 0;
+      left: 0;
       z-index: -1;
     }
 
     .profile-container {
       padding: 20px;
       margin-top: 60px;
+      position: relative;
+      z-index: 2;
     }
 
     .profile-img {
@@ -49,6 +57,7 @@
       height: auto;
       border-radius: 50%;
       margin-bottom: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
     }
 
     .blink_me {
@@ -57,6 +66,7 @@
       color: red;
       text-shadow: 5px 0 30px red;
       animation: blinker 1s linear infinite;
+      margin: 15px 0;
     }
 
     @keyframes blinker {
@@ -68,30 +78,35 @@
       font-family: 'Poiret One', cursive;
       font-size: 1.8rem;
       margin-top: 10px;
+      color: white;
+      text-shadow: 0 0 10px rgba(255,255,255,0.7);
     }
 
     .contact-info {
       margin-top: 30px;
       font-size: 1.1rem;
+      font-family: 'Cambria', serif;
     }
 
     hr {
       border-color: white;
       width: 60%;
       margin: 30px auto;
+      border-width: 2px;
+    }
+
+    /* Ensure no white background from Bootstrap */
+    .container-fluid, .row {
+      background: transparent !important;
     }
   </style>
 
   <!-- Bootstrap 3 CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-  <!-- jQuery & Bootstrap JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body oncontextmenu="alert('Mau Ngapain !!'); return false;" style="-moz-user-select: none; cursor: default;">
+<body oncontextmenu="alert('Mau Ngapain !!'); return false;" style="background: black !important; -moz-user-select: none; cursor: default;">
 
-  <!-- Background particles -->
+  <!-- Background particles - Original configuration -->
   <div id="particles-js"></div>
 
   <!-- Hidden audio -->
@@ -113,94 +128,231 @@
         <hr />
 
         <p class="contact-info">
-          <strong>Contact Me:</strong> <a href="mailto:makmurriansyah@protonmail.com" style="color: white; text-decoration: underline;">makmurriansyah@protonmail.com</a>
+          <strong style="color: red; font-size: 1.2em;">Contact Me:</strong> <span style="color: white; font-size: 1.1em;">makmurriansyah@protonmail.com</span>
         </p>
       </div>
     </div>
   </div>
 
-  <!-- Particles.js -->
+  <!-- jQuery & Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Particles.js - Original configuration from your code -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    particlesJS('particles-js', {
-      "particles": {
-        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": "#ffffff" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.5, "random": false },
-        "size": { "value": 5, "random": true },
-        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-        "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": { "enable": true, "mode": "repulse" },
-          "onclick": { "enable": true, "mode": "push" },
-          "resize": true
+    $(document).ready(function() {
+      particlesJS('particles-js', {
+        "particles": {
+          "number": {
+            "value": 80,
+            "density": {
+              "enable": true,
+              "value_area": 800
+            }
+          },
+          "color": {
+            "value": "#ffffff"
+          },
+          "shape": {
+            "type": "circle",
+            "stroke": {
+              "width": 0,
+              "color": "#000000"
+            },
+            "polygon": {
+              "nb_sides": 5
+            },
+            "image": {
+              "width": 100,
+              "height": 100
+            }
+          },
+          "opacity": {
+            "value": 0.5,
+            "random": false,
+            "anim": {
+              "enable": false,
+              "speed": 1,
+              "opacity_min": 0.1,
+              "sync": false
+            }
+          },
+          "size": {
+            "value": 5,
+            "random": true,
+            "anim": {
+              "enable": false,
+              "speed": 40,
+              "size_min": 0.1,
+              "sync": false
+            }
+          },
+          "line_linked": {
+            "enable": true,
+            "distance": 150,
+            "color": "#ffffff",
+            "opacity": 0.4,
+            "width": 1
+          },
+          "move": {
+            "enable": true,
+            "speed": 6,
+            "direction": "none",
+            "random": false,
+            "straight": false,
+            "out_mode": "out",
+            "attract": {
+              "enable": false,
+              "rotateX": 600,
+              "rotateY": 1200
+            }
+          }
+        },
+        "interactivity": {
+          "detect_on": "canvas",
+          "events": {
+            "onhover": {
+              "enable": true,
+              "mode": "repulse"
+            },
+            "onclick": {
+              "enable": true,
+              "mode": "push"
+            },
+            "resize": true
+          },
+          "modes": {
+            "grab": {
+              "distance": 400,
+              "line_linked": {
+                "opacity": 1
+              }
+            },
+            "bubble": {
+              "distance": 400,
+              "size": 40,
+              "duration": 2,
+              "opacity": 8,
+              "speed": 3
+            },
+            "repulse": {
+              "distance": 200
+            },
+            "push": {
+              "particles_nb": 4
+            },
+            "remove": {
+              "particles_nb": 2
+            }
+          }
+        },
+        "retina_detect": true,
+        "config_demo": {
+          "hide_card": false,
+          "background_color": "#b61924",
+          "background_image": "",
+          "background_position": "50% 50%",
+          "background_repeat": "no-repeat",
+          "background_size": "cover"
         }
-      },
-      "retina_detect": true
+      });
     });
   </script>
 
-  <!-- Fireworks script (optional - can be removed if too heavy) -->
+  <!-- Fireworks script - Original version -->
   <script>
     if (document.getElementById) {
-      var showerCol = ['#000000', '#ff0000', '#ffffff', '#00ff00', '#ff00ff', '#ffa500', '#ffff00'];
-      var launchCol = ['#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#ff8000'];
+      var showerCol = new Array('#000000', '#ff0000', '#ffffff', '#000000', '#00ff00', '#ff00ff', '#ffffff', '#ffa500', '#000000', '#fff000');
+      var launchCol = new Array('#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#ff8000');
       var runSpeed = 70;
-      var yPos = 200, xPos = 200, explosionSize = 200, launchColour = '#ffff80';
-      var timer = null, dims = 8, evn = 360 / 14, firework = [], thisStep = 0, step = 5;
+      var yPos = 200;
+      var xPos = 200;
+      var explosionSize = 200;
+      var launchColour = '#ffff80';
+      var timer = null;
+      var dims = 8;
+      var evn = 360 / 14;
+      var firework = new Array();
+      var thisStep = 0;
+      var step = 5;
 
-      for (let i = 0; i < 14; i++) {
-        let spark = document.createElement('div');
-        spark.id = 'sparks' + i;
-        spark.style.cssText = `position:absolute; top:0; left:0; border-radius:50%; height:${dims}px; width:${dims}px; background-color:${launchColour};`;
+      for (i = 0; i < 14; i++) {
+        var spark = document.createElement('div');
+        spark.id = "sparks" + i;
+        spark.style.position = "absolute";
+        spark.style.top = "0px";
+        spark.style.left = "0px";
+        spark.style.borderRadius = "50%";
+        spark.style.height = dims + "px";
+        spark.style.width = dims + "px";
+        spark.style.fontSize = dims + "px";
+        spark.style.backgroundColor = launchColour;
         document.body.appendChild(spark);
-        firework[i] = spark.style;
+        firework[i] = document.getElementById("sparks" + i).style;
       }
 
       function winDims() {
-        const winH = window.innerHeight;
-        const winW = window.innerWidth;
+        var winH = (typeof window.innerHeight != 'number') ? 
+          ((document.compatMode && document.compatMode.indexOf("CSS") != -1) ? document.documentElement.clientHeight : document.body.clientHeight) : 
+          window.innerHeight;
+        var winW = (typeof window.innerWidth != 'number') ? 
+          ((document.compatMode && document.compatMode.indexOf("CSS") != -1) ? document.documentElement.clientWidth : document.body.clientWidth) : 
+          window.innerWidth;
         bestFit = (winW >= winH) ? winH : winW;
       }
+
       winDims();
-      window.addEventListener('resize', winDims);
+      window.onresize = function() { winDims(); };
 
       function Reset() {
+        var dsy = (typeof window.pageYOffset != 'number') ? 
+          ((document.compatMode && document.compatMode.indexOf("CSS") != -1) ? document.documentElement.scrollTop : document.body.scrollTop) : 
+          window.pageYOffset;
+        
         thisStep = -1;
         launchColour = launchCol[Math.floor(Math.random() * launchCol.length)];
         explosionSize = Math.round(100 + Math.random() * (bestFit / 4));
-        yPos = explosionSize + Math.round(Math.random() * (window.innerHeight - explosionSize * 2.2)) + window.pageYOffset;
-        xPos = explosionSize + Math.round(Math.random() * (window.innerWidth - explosionSize * 2.2));
-        for (let i = 0; i < 14; i++) {
+        yPos = explosionSize + Math.round(Math.random() * (winH - (explosionSize * 2.2))) + dsy;
+        xPos = explosionSize + Math.round(Math.random() * (winW - (explosionSize * 2.2)));
+        
+        for (i = 0; i < 14; i++) {
           firework[i].backgroundColor = launchColour;
-          firework[i].width = firework[i].height = dims + 'px';
+          firework[i].width = dims + "px";
+          firework[i].height = dims + "px";
+          firework[i].fontSize = dims + "px";
         }
+        
         Fireworks();
       }
 
       function Fireworks() {
         thisStep += step;
         timer = setTimeout(Fireworks, runSpeed);
-        for (let i = 0; i < 14; i++) {
-          firework[i].top = (yPos + explosionSize * Math.sin(i * evn * Math.PI / 180) * Math.sin(thisStep / 100)) + 'px';
-          firework[i].left = (xPos + explosionSize * Math.cos(i * evn * Math.PI / 180) * Math.sin(thisStep / 100)) + 'px';
+        
+        for (i = 0; i < 14; i++) {
+          firework[i].top = (yPos + explosionSize * Math.sin(i * evn * Math.PI / 180) * Math.sin(thisStep / 100)) + "px";
+          firework[i].left = (xPos + explosionSize * Math.cos(i * evn * Math.PI / 180) * Math.sin(thisStep / 100)) + "px";
+          
           if (thisStep > 100) {
-            let dims_change = (explosionSize < 150) ? dims : Math.round(dims + Math.random() * 2);
+            var dims_change = (explosionSize < 150) ? dims : Math.round(dims + Math.random() * 2);
             firework[i].backgroundColor = showerCol[Math.floor(Math.random() * showerCol.length)];
-            firework[i].width = firework[i].height = dims_change + 'px';
+            firework[i].width = dims_change + "px";
+            firework[i].height = dims_change + "px";
+            firework[i].fontSize = dims_change + "px";
           }
         }
+        
         if (thisStep > 140) {
           clearTimeout(timer);
           Reset();
         }
       }
 
-      window.onload = Reset;
+      window.onload = function() {
+        winDims();
+        Reset();
+      };
     }
   </script>
 
